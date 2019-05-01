@@ -38,6 +38,20 @@ router.delete('/:id', (req, res) => {
     .catch(error => res.status(500).json({message: "Error deleting cohort.", error}));
 });
 
+router.put('/:id', (req, res) => {
+  const {id} = req.params;
+  const changes = req.body;
+  if (changes && changes.name && changes.name !== '') {
+    db.update(changes, id)
+      .then(cohort => cohort
+            ? res.status(200).json(cohort)
+            : res.status(404).json({message: "Cohort with id does not exist."}))
+      .catch(error => console.log(error) || res.status(500).json({message: "Error updating cohort."}));
+  } else {
+    res.status(400).json({message: "Update requires changes."});
+  }
+});
+
 router.get('/:id/students', (req, res) => {
   const {id} = req.params;
   db.getStudents(id)

@@ -35,5 +35,5 @@ function update(changes, id) {
   return db('cohorts')
     .where({id})
     .update(changes, 'id')
-    .then(([id]) => get(id));
+    .then(updates => updates > 0 ? get(id) : null);
 }
