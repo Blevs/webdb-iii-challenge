@@ -9,6 +9,18 @@ router.get('/', (req, res) => {
     .catch(() => res.status(500).json({message: "Error fetching students."}));
 });
 
+
+router.post('/', (req, res) => {
+  const student = req.body;
+  if (student && (student.name && student.name !== "") && student.cohort_id) {
+    db.insert(student)
+      .then(student => res.status(201).json(student))
+      .catch(error => res.status(500).json({message: "Error creating student.", error}));
+  } else {
+    res.status(400).json({message: "Student must have name and cohort_id."});
+  }
+});
+
 router.get('/:id', (req, res) => {
   const {id} = req.params;
   db.get(id)
