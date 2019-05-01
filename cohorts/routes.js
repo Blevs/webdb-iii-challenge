@@ -14,9 +14,9 @@ router.post('/', (req, res) => {
   if (cohort && cohort.name !== "") {
     db.insert(cohort)
       .then(cohort => res.status(201).json(cohort))
-      .catch(error => res.status(500).json({message: "Error creating cohort", error}));
+      .catch(error => res.status(500).json({message: "Error creating cohort.", error}));
   } else {
-    res.status(400).json({message: "Cohort must have name"});
+    res.status(400).json({message: "Cohort must have name."});
   }
 });
 
@@ -27,6 +27,15 @@ router.get('/:id', (req, res) => {
           ? res.status(200).json(cohort)
           : res.status(404).json({message: "Cohort with id does not exist."}))
     .catch(() => res.status(500).json({message: "Error fetching cohort."}));
+});
+
+router.delete('/:id', (req, res) => {
+  const {id} = req.params;
+  db.remove(id)
+    .then(deleted => deleted
+          ? res.status(200).end()
+          : res.status(404).json({message: "Cohort with id does not exist."}))
+    .catch(error => res.status(500).json({message: "Error deleting cohort.", error}));
 });
 
 router.get('/:id/students', (req, res) => {

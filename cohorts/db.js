@@ -28,7 +28,7 @@ function insert(cohort) {
 }
 
 function remove(id) {
-  db('cohorts').where({id}).del();
+  return db('cohorts').where({id}).del();
 }
 
 function update(changes, id) {
