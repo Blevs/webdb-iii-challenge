@@ -9,6 +9,17 @@ router.get('/', (req, res) => {
     .catch(() => res.status(500).json({message: "Error fetching cohorts."}));
 });
 
+router.post('/', (req, res) => {
+  const cohort = req.body;
+  if (cohort && cohort.name !== "") {
+    db.insert(cohort)
+      .then(cohort => res.status(201).json(cohort))
+      .catch(error => res.status(500).json({message: "Error creating cohort", error}));
+  } else {
+    res.status(400).json({message: "Cohort must have name"});
+  }
+});
+
 router.get('/:id', (req, res) => {
   const {id} = req.params;
   db.get(id)
